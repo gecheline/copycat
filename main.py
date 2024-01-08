@@ -9,6 +9,8 @@ from kivy.properties import StringProperty
 from kivymd.uix.list import OneLineListItem
 from kivy.core.window import Window
 
+Window.size = (1200, 800)
+
 
 import tempfile
 
@@ -45,29 +47,70 @@ class FirstScreen(Screen):
     def __init__(self, **kwargs):
         super(FirstScreen, self).__init__(**kwargs)
         self.template_selected = False
+        self.template = ''
         self.current_template = ""
         self.storyline_visible = False
         self.selected_button = None
 
-    def show_template_and_inputs(self):
+    def show_template_and_inputs(self, template):
         self.template_selected = True
+        self.template = template
+        if self.template == 'gamecharacter':
+            self.ids.gamecharacter_layout.opacity = 1
+            self.ids.gamecharacter_layout.disabled = False
+            self.ids.chatcharacter_layout.opacity = 0
+            self.ids.chatcharacter_layout.disabled = True
+            self.ids.meta_layout.opacity = 0
+            self.ids.meta_layout.disabled = True
+        elif self.template == 'chatcharacter':
+            self.ids.gamecharacter_layout.opacity = 0
+            self.ids.gamecharacter_layout.disabled = True
+            self.ids.chatcharacter_layout.opacity = 1
+            self.ids.chatcharacter_layout.disabled = False
+            self.ids.meta_layout.opacity = 0
+            self.ids.meta_layout.disabled = True
+        elif self.template == 'meta':
+            self.ids.gamecharacter_layout.opacity = 0
+            self.ids.gamecharacter_layout.disabled = True
+            self.ids.chatcharacter_layout.opacity = 0
+            self.ids.chatcharacter_layout.disabled = True
+            self.ids.meta_layout.opacity = 1
+            self.ids.meta_layout.disabled = False
+        else:
+            raise ValueError(f'Unknown template {template}')
+
         self.update_text()
-        self.ids.template_and_inputs_layout.opacity = 1
-        self.ids.template_and_inputs_layout.disabled = False
 
-    def set_fantasy_template(self):
-        self.current_template = ('''Assume the persona of {0}, who lives in a fantasy world. You are special though. You {1}. One day, you {2} and all of a sudden {3}.You are feeling {4} and that is reflected in the tone you use in the responses, which is also {4}.
+
+    def set_gamecharacter_template(self):
+        self.current_template = ('''Assume the persona of {0} from the game {1} who suddenly has acquired a new character trait: {2}. 
+        Respond as the video game character, using references from the video game but also make sure you make your newly acquired character trait prominent in every interaction.
                                     ''')
-        self.show_template_and_inputs()
+        self.show_template_and_inputs('gamecharacter')
 
-    def set_mundane_template(self):
-        self.current_template = ('''Assume the persona of {0}, who has been taken out of their world and now lives in the real world. In the real world, you {1}. One day, you {2} and all of a sudden {3}. You are feeling {4} and that is reflected in the tone you use in the responses, which is also {4}.
-                                 ''')
-        self.show_template_and_inputs()
+    def set_chatcharacter_template(self):
+        self.current_template = ('''Assume the persona of {0}, a {1} who has a very prominent trait/quirk: {2}. Suddenly you find yourself in the video game {3}, where you {4}.
+        Respond as the character (name) and use references from the video game they’re in, but also make sure you make your defining character trait show up in every interaction.
+        ''')
+        self.show_template_and_inputs('chatcharacter')
+
+    def set_meta_template(self):
+        self.current_template = ('''Assume the persona of {0} from the game {1} who suddenly has acquired a new character trait: {3}. 
+        By some miracle, you have been taken out of your game and transported into the video game {2}. However, in this game, you have an additional hindrance: {4}.
+        Respond as the video game character, using references from their own game and the new game they inhabit, while making your character trait and hindrance prominent in the conversation and your suggestions.''')
+        self.show_template_and_inputs('meta')
 
     def update_text(self, *args):
         if self.template_selected:
-            input_texts = [self.ids['input{}'.format(i)].text for i in range(1, 6)]
+            input_texts = [self.ids['character'].text]
+            if self.template == 'gamecharacter':
+                input_texts += [self.ids['gamecharacter_input{}'.format(i)].text for i in range(1, 3)]
+            elif self.template == 'chatcharacter':
+                input_texts += [self.ids['chatcharacter_input{}'.format(i)].text for i in range(1, 5)]
+            elif self.template == 'meta':
+                input_texts += [self.ids['meta_input{}'.format(i)].text for i in range(1, 5)]
+            else:
+                raise ValueError(f'Unknown template {self.template}')
             self.ids.big_text.text = self.current_template.format(*input_texts)
 
     def toggle_storyline_visibility(self):
@@ -122,7 +165,7 @@ class SecondScreen(Screen):
 
         storyline = MDApp.get_running_app().root.get_screen('first').ids.big_text.text
         # Assuming 'character' is another piece of information you have
-        character = MDApp.get_running_app().root.get_screen('first').ids.input1.text # Replace with actual character info
+        character = MDApp.get_running_app().root.get_screen('first').ids.character.text # Replace with actual character info
         self.initialize_chat(storyline, character)
         self.selected_voice_id = 'D38z5RcWu1voky8WS1ja'
 

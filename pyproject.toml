@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "flip-gpt-labs"
+name = "copycat"
 version = "0.1.0"
 description = "Connect ChatGPT + ElevenLabs + OBS to chat live with video game characters"
 authors = ["Angela Kochoska <a.kochoska@gmail.com>"]
@@ -20,6 +20,7 @@ python-dotenv = "^1.0.0"
 kivy = "^2.2.1"
 soundfile = "^0.12.1"
 kivymd = "^1.1.1"
+scipy = "^1.11.4"
 
 
 [build-system]

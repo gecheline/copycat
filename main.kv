@@ -39,109 +39,199 @@ ScreenManager:
                     size_hint_x: 1
 
                 MDFlatButton:
-                    text: "Fantasy"
+                    text: "Video Game Character"
                     on_press: root.select_button(self)
-                    on_release: root.set_fantasy_template()
+                    on_release: root.set_gamecharacter_template()
                     size_hint_x: None
                     width: dp(130)
                     md_bg_color: app.theme_cls.bg_normal
 
                 MDFlatButton:
-                    text: "Mundane"
+                    text: "Chat Character + Video Game"
                     on_press: root.select_button(self)
-                    on_release: root.set_mundane_template()
+                    on_release: root.set_chatcharacter_template()
                     size_hint_x: None
                     width: dp(130)
                     md_bg_color: app.theme_cls.bg_normal
+
+                MDFlatButton:
+                    text: "Video Game Character in Another Game"
+                    on_press: root.select_button(self)
+                    on_release: root.set_meta_template()
+                    size_hint_x: None
+                    width: dp(130)
+                    md_bg_color: app.theme_cls.bg_normal
+
+
 
                 # Spacer on the right
                 Widget:
                     size_hint_x: 1
 
+        MDTextField:
+            id: character
+            hint_text: "Fictional character (video game/movie/tv show)"
+            on_text: root.update_text()
+            size_hint_x: None
+            width: self.parent.width - dp(20)
+
+
         # Template and Inputs Layout (Initially invisible and disabled)
-        BoxLayout:
-            id: template_and_inputs_layout
-            orientation: 'vertical'
-            opacity: 0
-            disabled: True
 
-            # Input fields
-            GridLayout:
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-                spacing: 10
+        # Input fields
+        GridLayout:
+            cols: 3
+            spacing: 10
 
-                MDTextField:
-                    id: input1
-                    hint_text: "Fictional character (video game/movie/tv show)"
-                    on_text: root.update_text()
-                    size_hint_x: None
-                    width: self.parent.width - dp(20)
+            BoxLayout:
+                id: gamecharacter_layout
+                orientation: 'vertical'
+                opacity: 0
+                disabled: True
 
-                MDTextField:
-                    id: input2
-                    hint_text: "Quirky trait / Superpower / Ability"
-                    on_text: root.update_text()
-                    size_hint_x: None
-                    width: self.parent.width - dp(20)
-                MDTextField:
-                    id: input3
-                    hint_text: "Mundane task / Quest / Awkward situation"
-                    on_text: root.update_text()
-                    size_hint_x: None
-                    width: self.parent.width - dp(20)
-                MDTextField:
-                    id: input4
-                    hint_text: "Unexpected twist"
-                    on_text: root.update_text()
-                    size_hint_x: None
-                    width: self.parent.width - dp(20)
-                MDTextField:
-                    id: input5
-                    hint_text: "Tone in which you want it to respond to you"
-                    on_text: root.update_text()
-                    size_hint_x: None
-                    width: self.parent.width - dp(20)
+                # Input fields
+                GridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
 
-            # View Generated Storyline Button
-            MDFlatButton:
-                text: "View Generated Storyline"
-                on_press: root.temporary_color_change(self, True)
-                on_release: root.temporary_color_change(self, False)
-                on_release: root.toggle_storyline_visibility()
-                size_hint_y: None
-                height: dp(48)
-                padding: 20
-                pos_hint: {'center_x': .5}
-                md_bg_color: app.theme_cls.primary_color
-                    
-            # Big text box
-            MDLabel:
-                id: big_text
-                text: ""
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1]
-                font_style: 'Body1'
-                font_size: '14sp'  # Adjust font size to typical paragraph size
-                line_height: 1.5  # Adjust line height for better readability
-                padding: 50,5,5,10
-                opacity: 0  # Initially invisible
-                disabled: True  # Initially disabled
+                    MDTextField:
+                        id: gamecharacter_input1
+                        hint_text: "Video game"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: gamecharacter_input2
+                        hint_text: "Newly acquired character trait"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+            # Template and Inputs Layout (Initially invisible and disabled)
+            BoxLayout:
+                id: chatcharacter_layout
+                orientation: 'vertical'
+                opacity: 0
+                disabled: True
+
+                # Input fields
+                GridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
+
+                    MDTextField:
+                        id: chatcharacter_input1
+                        hint_text: "What/Who are you?"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: chatcharacter_input2
+                        hint_text: "What's your defining trait/quirk?"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: chatcharacter_input3
+                        hint_text: "What video game are you in?"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: chatcharacter_input4
+                        hint_text: "What are you doing there?"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+            # Template and Inputs Layout (Initially invisible and disabled)
+            BoxLayout:
+                id: meta_layout
+                orientation: 'vertical'
+                opacity: 0
+                disabled: True
+
+                # Input fields
+                GridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
+
+                    MDTextField:
+                        id: meta_input1
+                        hint_text: "Character's video game"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: meta_input2
+                        hint_text: "Which video game have they been transported to?"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: meta_input3
+                        hint_text: "Newly acquired character trait"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+                    MDTextField:
+                        id: meta_input4
+                        hint_text: "Newly acquired hindrance in the new game"
+                        on_text: root.update_text()
+                        size_hint_x: None
+                        width: self.parent.width - dp(20)
+
+        # View Generated Storyline Button
+        MDFlatButton:
+            text: "View Generated Storyline"
+            on_press: root.temporary_color_change(self, True)
+            on_release: root.temporary_color_change(self, False)
+            on_release: root.toggle_storyline_visibility()
+            size_hint_y: None
+            height: dp(48)
+            padding: 20
+            pos_hint: {'center_x': .5}
+            md_bg_color: app.theme_cls.primary_color
+                
+        # Big text box
+        MDLabel:
+            id: big_text
+            text: ""
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            font_style: 'Body1'
+            font_size: '14sp'  # Adjust font size to typical paragraph size
+            line_height: 1.5  # Adjust line height for better readability
+            padding: 50,5,5,10
+            opacity: 0  # Initially invisible
+            disabled: True  # Initially disabled
 
             
-            # Confirm button
-            MDFlatButton:
-                text: "Confirm"
-                on_press: root.temporary_color_change(self, True)
-                on_release: root.temporary_color_change(self, False)
-                on_release: app.switch_to_second()
-                size_hint_y: None
-                height: dp(48)
-                padding: 20
-                pos_hint: {'center_x': .5}
-                md_bg_color: app.theme_cls.primary_color
+        # Confirm button
+        MDFlatButton:
+            text: "Confirm"
+            on_press: root.temporary_color_change(self, True)
+            on_release: root.temporary_color_change(self, False)
+            on_release: app.switch_to_second()
+            size_hint_y: None
+            height: dp(48)
+            padding: 20
+            pos_hint: {'center_x': .5}
+            md_bg_color: app.theme_cls.primary_color
 
 
 <SecondScreen>:
